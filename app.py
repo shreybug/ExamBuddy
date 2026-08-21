@@ -351,8 +351,8 @@ if not api_key:
 client = genai.Client(api_key=api_key)
 
 MODELS_TO_TRY = [
-    "gemini-3.5-flash",
-    "gemini-3.6-flash"
+    "gemini-3.6-flash",
+    "gemini-3.5-flash"
 ]
 
 def generate_content_with_fallback(contents, system_instruction=None):
@@ -362,7 +362,7 @@ def generate_content_with_fallback(contents, system_instruction=None):
     ) if system_instruction else None
 
     for model_name in MODELS_TO_TRY:
-        for attempt in range(3):
+        for attempt in range(2):
             try:
                 response = client.models.generate_content(
                     model=model_name,
@@ -372,9 +372,8 @@ def generate_content_with_fallback(contents, system_instruction=None):
                 return response.text
             except Exception as e:
                 last_error = e
-                # Exponential backoff if hit by rate-limiting
                 if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
-                    time.sleep(2 ** (attempt + 1))
+                    time.sleep(2)
                 else:
                     break
     raise last_error
@@ -425,7 +424,7 @@ You are ExamBuddy, an expert academic tutor, mentor, and examination trend analy
 Behavioral Guidelines:
 1. Always answer student questions, conceptual queries, derivations, code, and practice problems thoroughly and accurately.
 2. If reference documents (syllabus, PYQs, exam images) are provided in the session, ground your analysis and predictions in those files.
-3. If NO documents are attached or uploaded, answer freely using your comprehensive academic knowledge base and university curriculum standards.
+3. If NO documents are attached or uploaded, answer freely using your comprehensive academic knowledge base and standard university curriculum standards.
 4. Solve mathematical and engineering problems with clear, structured step-by-step logic.
 """
 
@@ -512,51 +511,41 @@ with header_right:
     p_badge = f'<span class="status-badge-active">{len(current_data["paper_refs"])} Files Loaded</span>' if current_data["paper_refs"] else '<span class="status-badge-inactive">0 Files Loaded</span>'
     st.markdown(f"<div style='text-align:right; margin-top:15px;'>{s_badge} &nbsp; {p_badge}</div>", unsafe_allow_html=True)
 
-# 11. Interactive Tabs Workspace
-tab_chat, tab_presets, tab_checklist, tab_export = st.tabs([
-    "💬 Chat & Solutions",
-    "⚡ One-Click Generator",
-    "✅ Revision Checklist",
-    "📥 Export Study Guide"
-])
-
+# 11. Core Gemini Runner Function
 def run_gemini_query(prompt_text):
     if not prompt_text or not prompt_text.strip():
         return
 
-    # 1. Build conversational history using standard SDK formats
-    contents = []
-    
-    # Attach uploaded files only to the first user turn if they exist
     all_files = current_data.get("syllabus_refs", []) + current_data.get("paper_refs", [])
+    contents = []
 
-    if not current_data["chat_history"]:
-        # First turn in session
-        first_turn_parts = list(all_files)
-        first_turn_parts.append(prompt_text.strip())
-        contents = first_turn_parts
-    else:
-        # Reconstruct prior chat turns
-        for i, turn in enumerate(current_data["chat_history"]):
-            role = "user" if turn["role"] == "user" else "model"
-            parts = []
-            if i == 0 and all_files:
-                parts.extend(all_files)
-            parts.append(turn["text"])
-            
-            contents.append(
-                types.Content(
-                    role=role,
-                    parts=[types.Part.from_text(text=p) if isinstance(p, str) else p for p in parts]
-                )
-            )
-        # Add the new prompt
+    # Rebuild conversation history
+    for i, turn in enumerate(current_data["chat_history"]):
+        role = "user" if turn["role"] == "user" else "model"
+        parts = []
+        if i == 0 and all_files:
+            parts.extend(all_files)
+        parts.append(turn["text"])
+        
         contents.append(
             types.Content(
-                role="user",
-                parts=[types.Part.from_text(text=prompt_text.strip())]
+                role=role,
+                parts=[p if hasattr(p, "uri") else types.Part.from_text(text=str(p)) for p in parts]
             )
         )
+
+    # Current prompt parts
+    new_parts = []
+    if not current_data["chat_history"] and all_files:
+        new_parts.extend(all_files)
+    new_parts.append(prompt_text.strip())
+
+    contents.append(
+        types.Content(
+            role="user",
+            parts=[p if hasattr(p, "uri") else types.Part.from_text(text=str(p)) for p in new_parts]
+        )
+    )
 
     current_data["chat_history"].append({"role": "user", "text": prompt_text.strip()})
 
@@ -571,15 +560,24 @@ def run_gemini_query(prompt_text):
             st.rerun()
         except Exception as e:
             st.error(f"Error: {e}")
+
+# 12. Interactive Tabs Workspace
+tab_chat, tab_presets, tab_checklist, tab_export = st.tabs([
+    "💬 Chat & Solutions",
+    "⚡ One-Click Generator",
+    "✅ Revision Checklist",
+    "📥 Export Study Guide"
+])
+
 # TAB 1: Chat & Solutions
 with tab_chat:
     st.markdown("##### Quick Action Presets")
     c1, c2 = st.columns(2)
     with c1:
-        if st.button("📊 Full Trend Report", use_container_width=True):
+        if st.button("📊 Full Trend Report", key="btn_trend", use_container_width=True):
             run_gemini_query("Generate a full Module-wise Weightage table, repeated theorems, and exam priorities.")
     with c2:
-        if st.button("🔍 Syllabus Audit", use_container_width=True):
+        if st.button("🔍 Syllabus Audit", key="btn_audit", use_container_width=True):
             run_gemini_query("Compare syllabus units against the question papers and list overlooked vs heavily tested units.")
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -608,7 +606,7 @@ with tab_presets:
             <p style="color: #FFE0B2; font-size: 1rem;">Extracts and organizes all key formulas, proofs, and definitions.</p>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("Generate Formula & Derivations Sheet", use_container_width=True):
+        if st.button("Generate Formula & Derivations Sheet", key="btn_formulas", use_container_width=True):
             run_gemini_query("Extract and summarize all important recurring definitions, formulas, and derivations into a structured cheat sheet.")
 
     with gen_col2:
@@ -618,7 +616,7 @@ with tab_presets:
             <p style="color: #FFE0B2; font-size: 1rem;">Generates short concept-testing questions with step-by-step answers.</p>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("Generate Short Concept Questions", use_container_width=True):
+        if st.button("Generate Short Concept Questions", key="btn_short_q", use_container_width=True):
             run_gemini_query("Generate 5 short 2-mark/3-mark questions from high-weightage topics with concise answers.")
 
 # TAB 3: Revision Checklist
