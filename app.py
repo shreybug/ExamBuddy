@@ -9,9 +9,20 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-# 1. Load environment variables
+# 1. Load environment variables & Streamlit secrets
 load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
+
+api_key = None
+try:
+    if "GEMINI_API_KEY" in st.secrets:
+        api_key = st.secrets["GEMINI_API_KEY"]
+    elif "GOOGLE_API_KEY" in st.secrets:
+        api_key = st.secrets["GOOGLE_API_KEY"]
+except Exception:
+    pass
+
+if not api_key:
+    api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
 
 # 2. Page Configuration
 st.set_page_config(
@@ -333,13 +344,15 @@ if bg_base64:
     """, unsafe_allow_html=True)
 
 # 7. Gemini Client & Fallback Configuration
+if not api_key:
+    st.error("⚠️ **API Key Missing**: Please configure `GEMINI_API_KEY` in Streamlit Cloud Secrets or your `.env` file.")
+    st.stop()
+
 client = genai.Client(api_key=api_key)
 
 MODELS_TO_TRY = [
-    "gemini-flash-latest",
-    "gemini-3.5-flash-lite",
-    "gemini-3.5-flash",
-    "gemini-3.6-flash"
+    "gemini-2.5-flash",
+    "gemini-2.5-pro"
 ]
 
 def generate_content_with_fallback(contents, system_instruction=None):
@@ -403,16 +416,13 @@ if current_subj not in st.session_state.subjects:
 current_data = st.session_state.subjects[current_subj]
 
 SYSTEM_INSTRUCTION = """
-You are ExamBuddy, an expert academic advisor and examination trend analyst.
-You have access to uploaded materials which may be PDFs or direct images/photos (PNG, JPG) of documents:
-1. OFFICIAL SYLLABUS: Contains course units, modules, and learning outcomes.
-2. PREVIOUS YEAR QUESTION PAPERS (PYQs): Historical exams containing questions, marks, and distribution patterns.
+You are ExamBuddy, an expert academic tutor, mentor, and examination trend analyst.
 
-Core rules:
-- Read both typed text and scanned/handwritten paper photos accurately.
-- Map questions directly to Syllabus Modules/Units.
-- Distinguish clearly between syllabus requirements and historical trends.
-- Solve both exam questions and generated practice problems with complete step-by-step logic.
+Behavioral Guidelines:
+1. Always answer student questions, conceptual queries, derivations, code, and practice problems thoroughly and accurately.
+2. If reference documents (syllabus, PYQs, exam images) are provided in the session, ground your analysis and predictions in those files.
+3. If NO documents are attached or uploaded, answer freely using your comprehensive academic knowledge base and university curriculum standards.
+4. Solve mathematical and engineering problems with clear, structured step-by-step logic.
 """
 
 # 9. Sidebar Controls
@@ -507,10 +517,6 @@ tab_chat, tab_presets, tab_checklist, tab_export = st.tabs([
 ])
 
 def run_gemini_query(prompt_text):
-    if not current_data["paper_refs"] and not current_data["syllabus_refs"]:
-        st.warning("Please upload syllabus or question paper files (PDF/Images) in the sidebar first.")
-        return
-
     all_docs = current_data["syllabus_refs"] + current_data["paper_refs"]
     conversation_contents = []
     
@@ -521,7 +527,10 @@ def run_gemini_query(prompt_text):
             parts = [turn["text"]]
         
         conversation_contents.append(
-            types.Content(role=turn["role"], parts=[types.Part.from_text(text=p) if isinstance(p, str) else p for p in parts])
+            types.Content(
+                role=turn["role"],
+                parts=[types.Part.from_text(text=p) if isinstance(p, str) else p for p in parts]
+            )
         )
 
     if not conversation_contents:
@@ -539,7 +548,7 @@ def run_gemini_query(prompt_text):
 
     current_data["chat_history"].append({"role": "user", "text": prompt_text})
 
-    with st.spinner("ExamBuddy is analyzing..."):
+    with st.spinner("ExamBuddy is thinking..."):
         try:
             response_text = generate_content_with_fallback(
                 contents=conversation_contents,
@@ -578,14 +587,14 @@ with tab_chat:
 # TAB 2: One-Click Generator
 with tab_presets:
     st.markdown("### Interactive Practice & Generator Hub")
-    st.caption("Generate targeted study material grounded in your uploaded papers and images.")
+    st.caption("Generate targeted study material grounded in your uploaded papers or standard subject curriculum.")
     
     gen_col1, gen_col2 = st.columns(2)
     with gen_col1:
         st.markdown("""
         <div class="interactive-card">
             <h4>💡 High-Yield Formula & Derivations Sheet</h4>
-            <p style="color: #FFE0B2; font-size: 1rem;">Extracts all recurring formulas, proofs, and definitions from past exams.</p>
+            <p style="color: #FFE0B2; font-size: 1rem;">Extracts and organizes all key formulas, proofs, and definitions.</p>
         </div>
         """, unsafe_allow_html=True)
         if st.button("Generate Formula & Derivations Sheet", use_container_width=True):
