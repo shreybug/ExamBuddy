@@ -352,7 +352,8 @@ client = genai.Client(api_key=api_key)
 
 MODELS_TO_TRY = [
     "gemini-2.5-flash",
-    "gemini-3.1-pro-preview"
+    "gemini-2.5-flash-lite",
+    "gemini-2.0-flash"
 ]
 
 def generate_content_with_fallback(contents, system_instruction=None):
