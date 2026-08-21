@@ -352,8 +352,7 @@ client = genai.Client(api_key=api_key)
 
 MODELS_TO_TRY = [
     "gemini-2.5-flash",
-    "gemini-2.5-flash-lite",
-    "gemini-3.1-pro-preview"
+    "gemini-2.0-flash"
 ]
 
 def generate_content_with_fallback(contents, system_instruction=None):
@@ -363,17 +362,21 @@ def generate_content_with_fallback(contents, system_instruction=None):
     ) if system_instruction else None
 
     for model_name in MODELS_TO_TRY:
-        try:
-            response = client.models.generate_content(
-                model=model_name,
-                contents=contents,
-                config=config
-            )
-            return response.text
-        except Exception as e:
-            last_error = e
-            time.sleep(1)
-            continue
+        for attempt in range(3):
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=contents,
+                    config=config
+                )
+                return response.text
+            except Exception as e:
+                last_error = e
+                # Exponential backoff if hit by rate-limiting
+                if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
+                    time.sleep(2 ** (attempt + 1))
+                else:
+                    break
     raise last_error
 
 def upload_file_to_gemini(uploaded_file):
