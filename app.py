@@ -521,41 +521,49 @@ tab_chat, tab_presets, tab_checklist, tab_export = st.tabs([
 ])
 
 def run_gemini_query(prompt_text):
-    all_docs = current_data["syllabus_refs"] + current_data["paper_refs"]
-    conversation_contents = []
-    
-    for i, turn in enumerate(current_data["chat_history"]):
-        if i == 0 and turn["role"] == "user":
-            parts = all_docs + [turn["text"]]
-        else:
-            parts = [turn["text"]]
-        
-        conversation_contents.append(
-            types.Content(
-                role=turn["role"],
-                parts=[types.Part.from_text(text=p) if isinstance(p, str) else p for p in parts]
-            )
-        )
+    if not prompt_text or not prompt_text.strip():
+        return
 
-    if not conversation_contents:
-        first_turn_parts = all_docs + [prompt_text]
-        conversation_contents.append(
+    # 1. Build conversational history using standard SDK formats
+    contents = []
+    
+    # Attach uploaded files only to the first user turn if they exist
+    all_files = current_data.get("syllabus_refs", []) + current_data.get("paper_refs", [])
+
+    if not current_data["chat_history"]:
+        # First turn in session
+        first_turn_parts = list(all_files)
+        first_turn_parts.append(prompt_text.strip())
+        contents = first_turn_parts
+    else:
+        # Reconstruct prior chat turns
+        for i, turn in enumerate(current_data["chat_history"]):
+            role = "user" if turn["role"] == "user" else "model"
+            parts = []
+            if i == 0 and all_files:
+                parts.extend(all_files)
+            parts.append(turn["text"])
+            
+            contents.append(
+                types.Content(
+                    role=role,
+                    parts=[types.Part.from_text(text=p) if isinstance(p, str) else p for p in parts]
+                )
+            )
+        # Add the new prompt
+        contents.append(
             types.Content(
                 role="user",
-                parts=[types.Part.from_text(text=p) if isinstance(p, str) else p for p in first_turn_parts]
+                parts=[types.Part.from_text(text=prompt_text.strip())]
             )
         )
-    else:
-        conversation_contents.append(
-            types.Content(role="user", parts=[types.Part.from_text(text=prompt_text)])
-        )
 
-    current_data["chat_history"].append({"role": "user", "text": prompt_text})
+    current_data["chat_history"].append({"role": "user", "text": prompt_text.strip()})
 
     with st.spinner("ExamBuddy is thinking..."):
         try:
             response_text = generate_content_with_fallback(
-                contents=conversation_contents,
+                contents=contents,
                 system_instruction=SYSTEM_INSTRUCTION
             )
             current_data["chat_history"].append({"role": "model", "text": response_text})
@@ -563,7 +571,6 @@ def run_gemini_query(prompt_text):
             st.rerun()
         except Exception as e:
             st.error(f"Error: {e}")
-
 # TAB 1: Chat & Solutions
 with tab_chat:
     st.markdown("##### Quick Action Presets")
