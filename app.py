@@ -516,37 +516,38 @@ def run_gemini_query(prompt_text):
     if not prompt_text or not prompt_text.strip():
         return
 
-    all_files = current_data.get("syllabus_refs", []) + current_data.get("paper_refs", [])
+    # 1. Prepare file references using proper SDK Part format
+    doc_parts = []
+    for f in current_data.get("syllabus_refs", []) + current_data.get("paper_refs", []):
+        if hasattr(f, "uri") and hasattr(f, "mime_type"):
+            doc_parts.append(types.Part.from_uri(file_uri=f.uri, mime_type=f.mime_type))
+        elif hasattr(f, "uri"):
+            doc_parts.append(types.Part.from_uri(file_uri=f.uri, mime_type="application/pdf"))
+
+    # 2. Build conversational contents payload
     contents = []
 
-    # Rebuild conversation history
+    # Include existing chat history
     for i, turn in enumerate(current_data["chat_history"]):
         role = "user" if turn["role"] == "user" else "model"
-        parts = []
-        if i == 0 and all_files:
-            parts.extend(all_files)
-        parts.append(turn["text"])
+        turn_parts = []
         
-        contents.append(
-            types.Content(
-                role=role,
-                parts=[p if hasattr(p, "uri") else types.Part.from_text(text=str(p)) for p in parts]
-            )
-        )
+        # Attach files to first prompt
+        if i == 0 and doc_parts:
+            turn_parts.extend(doc_parts)
+            
+        turn_parts.append(types.Part.from_text(text=turn["text"]))
+        contents.append(types.Content(role=role, parts=turn_parts))
 
-    # Current prompt parts
-    new_parts = []
-    if not current_data["chat_history"] and all_files:
-        new_parts.extend(all_files)
-    new_parts.append(prompt_text.strip())
+    # Add the current prompt
+    current_turn_parts = []
+    if not current_data["chat_history"] and doc_parts:
+        current_turn_parts.extend(doc_parts)
+    current_turn_parts.append(types.Part.from_text(text=prompt_text.strip()))
 
-    contents.append(
-        types.Content(
-            role="user",
-            parts=[p if hasattr(p, "uri") else types.Part.from_text(text=str(p)) for p in new_parts]
-        )
-    )
+    contents.append(types.Content(role="user", parts=current_turn_parts))
 
+    # Record message in UI session state
     current_data["chat_history"].append({"role": "user", "text": prompt_text.strip()})
 
     with st.spinner("ExamBuddy is thinking..."):
