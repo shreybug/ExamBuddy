@@ -73,7 +73,7 @@ st.markdown("""<style>
         letter-spacing: -1px;
         margin-bottom: 0px !important;
         line-height: 1.1 !important;
-        border-left: 6px solid #a955dc !important;
+        border-left: 6px solid #41611b !important;
         padding-left: 14px;
     }
 
@@ -89,12 +89,12 @@ st.markdown("""<style>
         font-weight: 750 !important;
     }
     h3 {
-        color: #f3e8ff !important;
+        color: #e2f0d9 !important;
         font-size: 1.65rem !important;
         font-weight: 700 !important;
     }
     h4 {
-        color: #d8b4fe !important;
+        color: #a9d18e !important;
         font-size: 1.35rem !important;
         font-weight: 650 !important;
     }
@@ -104,16 +104,16 @@ st.markdown("""<style>
     }
     .stCaption, [data-testid="stCaptionContainer"] p {
         font-size: 0.98rem !important;
-        color: #e9d5ff !important;
+        color: #c5e0b4 !important;
     }
 
     /* Glassmorphic Login Card */
     .login-card {
         background: rgba(40, 40, 43, 0.95);
-        border: 2px solid #a955dc;
+        border: 2px solid #41611b;
         border-radius: 16px;
         padding: 30px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(169, 85, 220, 0.25);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(65, 97, 27, 0.3);
         width: 100%;
         max-width: 420px;
     }
@@ -129,8 +129,8 @@ st.markdown("""<style>
         transition: all 0.25s ease;
     }
     .interactive-card:hover {
-        border-color: #a955dc !important;
-        box-shadow: 0 4px 20px rgba(169, 85, 220, 0.35);
+        border-color: #41611b !important;
+        box-shadow: 0 4px 20px rgba(65, 97, 27, 0.4);
     }
     
     /* Status Badges */
@@ -138,9 +138,9 @@ st.markdown("""<style>
         display: inline-block;
         padding: 6px 14px;
         border-radius: 20px;
-        background-color: rgba(169, 85, 220, 0.25) !important;
-        color: #d8b4fe !important;
-        border: 1.5px solid #a955dc !important;
+        background-color: rgba(65, 97, 27, 0.35) !important;
+        color: #c5e0b4 !important;
+        border: 1.5px solid #41611b !important;
         font-size: 0.95rem !important;
         font-weight: 700;
     }
@@ -167,22 +167,22 @@ st.markdown("""<style>
     }
     .stTabs [data-baseweb="tab"] {
         border-radius: 8px;
-        color: #e9d5ff !important;
+        color: #c5e0b4 !important;
         padding: 10px 20px;
         font-size: 1.1rem !important;
         font-weight: 700;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #a955dc !important;
+        background-color: #41611b !important;
         color: #FFFFFF !important;
-        box-shadow: 0 0 15px rgba(169, 85, 220, 0.4);
+        box-shadow: 0 0 15px rgba(65, 97, 27, 0.5);
     }
 
-    /* Buttons with Purple Highlights */
+    /* Buttons with Green Highlights */
     .stButton>button {
         background: rgba(52, 52, 56, 0.9) !important;
         color: #FFFFFF !important;
-        border: 1.5px solid #a955dc !important;
+        border: 1.5px solid #41611b !important;
         border-radius: 10px !important;
         padding: 0.6rem 1.2rem !important;
         font-size: 1.08rem !important;
@@ -190,24 +190,24 @@ st.markdown("""<style>
         transition: all 0.2s ease;
     }
     .stButton>button:hover {
-        background: #a955dc !important;
-        border-color: #c084fc !important;
+        background: #41611b !important;
+        border-color: #5b8726 !important;
         color: #FFFFFF !important;
-        box-shadow: 0 0 18px rgba(169, 85, 220, 0.5) !important;
+        box-shadow: 0 0 18px rgba(65, 97, 27, 0.6) !important;
     }
     
     /* Text Inputs & Selectboxes */
     .stTextInput>div>div>input, .stSelectbox>div>div {
         background-color: rgba(31, 31, 34, 0.9) !important;
-        border: 1.5px solid #a955dc !important;
+        border: 1.5px solid #41611b !important;
         color: #FFFFFF !important;
         border-radius: 10px !important;
         font-size: 1.1rem !important;
         padding: 10px !important;
     }
     .stTextInput>div>div>input:focus {
-        border-color: #c084fc !important;
-        box-shadow: 0 0 10px rgba(169, 85, 220, 0.4) !important;
+        border-color: #5b8726 !important;
+        box-shadow: 0 0 10px rgba(65, 97, 27, 0.5) !important;
     }
 
     /* Chat Messages */
@@ -225,9 +225,9 @@ st.markdown("""<style>
     [data-testid="stChatInput"] {
         background-color: rgba(30, 30, 33, 0.95) !important;
         backdrop-filter: blur(10px);
-        border: 2px solid #a955dc !important;
+        border: 2px solid #41611b !important;
         border-radius: 12px !important;
-        box-shadow: 0 0 15px rgba(169, 85, 220, 0.25) !important;
+        box-shadow: 0 0 15px rgba(65, 97, 27, 0.3) !important;
     }
     [data-testid="stChatInput"] textarea {
         font-size: 1.15rem !important;
