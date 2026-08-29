@@ -45,8 +45,7 @@ SUPPORTED_FILE_TYPES = ["pdf", "png", "jpg", "jpeg"]
 bg_base64 = get_base64_image("background.png") or get_base64_image("background.jpg")
 
 # 3. Custom CSS
-st.markdown("""
-<style>
+st.markdown("""<style>
     /* Global Matte Black Background */
     .stApp {
         background-color: #28282B !important;
@@ -74,7 +73,7 @@ st.markdown("""
         letter-spacing: -1px;
         margin-bottom: 0px !important;
         line-height: 1.1 !important;
-        border-left: 6px solid #FF5722;
+        border-left: 6px solid #a955dc !important;
         padding-left: 14px;
     }
 
@@ -90,12 +89,12 @@ st.markdown("""
         font-weight: 750 !important;
     }
     h3 {
-        color: #FFE0B2 !important;
+        color: #f3e8ff !important;
         font-size: 1.65rem !important;
         font-weight: 700 !important;
     }
     h4 {
-        color: #FF8A65 !important;
+        color: #d8b4fe !important;
         font-size: 1.35rem !important;
         font-weight: 650 !important;
     }
@@ -105,16 +104,16 @@ st.markdown("""
     }
     .stCaption, [data-testid="stCaptionContainer"] p {
         font-size: 0.98rem !important;
-        color: #FFE0B2 !important;
+        color: #e9d5ff !important;
     }
 
     /* Glassmorphic Login Card */
     .login-card {
         background: rgba(40, 40, 43, 0.95);
-        border: 2px solid #FF7043;
+        border: 2px solid #a955dc;
         border-radius: 16px;
         padding: 30px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 112, 67, 0.2);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(169, 85, 220, 0.25);
         width: 100%;
         max-width: 420px;
     }
@@ -130,8 +129,8 @@ st.markdown("""
         transition: all 0.25s ease;
     }
     .interactive-card:hover {
-        border-color: #FF7043;
-        box-shadow: 0 4px 20px rgba(255, 112, 67, 0.25);
+        border-color: #a955dc !important;
+        box-shadow: 0 4px 20px rgba(169, 85, 220, 0.35);
     }
     
     /* Status Badges */
@@ -139,9 +138,9 @@ st.markdown("""
         display: inline-block;
         padding: 6px 14px;
         border-radius: 20px;
-        background-color: rgba(255, 87, 34, 0.25);
-        color: #FF8A65;
-        border: 1.5px solid #FF7043;
+        background-color: rgba(169, 85, 220, 0.25) !important;
+        color: #d8b4fe !important;
+        border: 1.5px solid #a955dc !important;
         font-size: 0.95rem !important;
         font-weight: 700;
     }
@@ -168,22 +167,22 @@ st.markdown("""
     }
     .stTabs [data-baseweb="tab"] {
         border-radius: 8px;
-        color: #FFE0B2 !important;
+        color: #e9d5ff !important;
         padding: 10px 20px;
         font-size: 1.1rem !important;
         font-weight: 700;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #FF5722 !important;
+        background-color: #a955dc !important;
         color: #FFFFFF !important;
-        box-shadow: 0 0 15px rgba(255, 87, 34, 0.4);
+        box-shadow: 0 0 15px rgba(169, 85, 220, 0.4);
     }
 
-    /* Buttons with Orange Highlights */
+    /* Buttons with Purple Highlights */
     .stButton>button {
         background: rgba(52, 52, 56, 0.9) !important;
         color: #FFFFFF !important;
-        border: 1.5px solid #FF7043 !important;
+        border: 1.5px solid #a955dc !important;
         border-radius: 10px !important;
         padding: 0.6rem 1.2rem !important;
         font-size: 1.08rem !important;
@@ -191,24 +190,24 @@ st.markdown("""
         transition: all 0.2s ease;
     }
     .stButton>button:hover {
-        background: #FF5722 !important;
-        border-color: #FF8A65 !important;
+        background: #a955dc !important;
+        border-color: #c084fc !important;
         color: #FFFFFF !important;
-        box-shadow: 0 0 18px rgba(255, 87, 34, 0.5);
+        box-shadow: 0 0 18px rgba(169, 85, 220, 0.5) !important;
     }
     
     /* Text Inputs & Selectboxes */
     .stTextInput>div>div>input, .stSelectbox>div>div {
         background-color: rgba(31, 31, 34, 0.9) !important;
-        border: 1.5px solid #FF8A65 !important;
+        border: 1.5px solid #a955dc !important;
         color: #FFFFFF !important;
         border-radius: 10px !important;
         font-size: 1.1rem !important;
         padding: 10px !important;
     }
     .stTextInput>div>div>input:focus {
-        border-color: #FF5722 !important;
-        box-shadow: 0 0 10px rgba(255, 87, 34, 0.4) !important;
+        border-color: #c084fc !important;
+        box-shadow: 0 0 10px rgba(169, 85, 220, 0.4) !important;
     }
 
     /* Chat Messages */
@@ -226,9 +225,9 @@ st.markdown("""
     [data-testid="stChatInput"] {
         background-color: rgba(30, 30, 33, 0.95) !important;
         backdrop-filter: blur(10px);
-        border: 2px solid #FF7043 !important;
+        border: 2px solid #a955dc !important;
         border-radius: 12px !important;
-        box-shadow: 0 0 15px rgba(255, 112, 67, 0.25) !important;
+        box-shadow: 0 0 15px rgba(169, 85, 220, 0.25) !important;
     }
     [data-testid="stChatInput"] textarea {
         font-size: 1.15rem !important;
