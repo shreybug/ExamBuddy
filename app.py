@@ -74,7 +74,7 @@ st.markdown("""
         letter-spacing: -1px;
         margin-bottom: 0px !important;
         line-height: 1.1 !important;
-        border-left: 6px solid #41611b !important;
+        border-left: 6px solid #FF5722;
         padding-left: 14px;
     }
 
@@ -90,12 +90,12 @@ st.markdown("""
         font-weight: 750 !important;
     }
     h3 {
-        color: #e2f0d9 !important;
+        color: #FFE0B2 !important;
         font-size: 1.65rem !important;
         font-weight: 700 !important;
     }
     h4 {
-        color: #a9d18e !important;
+        color: #FF8A65 !important;
         font-size: 1.35rem !important;
         font-weight: 650 !important;
     }
@@ -105,16 +105,16 @@ st.markdown("""
     }
     .stCaption, [data-testid="stCaptionContainer"] p {
         font-size: 0.98rem !important;
-        color: #c5e0b4 !important;
+        color: #FFE0B2 !important;
     }
 
     /* Glassmorphic Login Card */
     .login-card {
         background: rgba(40, 40, 43, 0.95);
-        border: 2px solid #41611b;
+        border: 2px solid #FF7043;
         border-radius: 16px;
         padding: 30px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(65, 97, 27, 0.3);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 112, 67, 0.2);
         width: 100%;
         max-width: 420px;
     }
@@ -130,8 +130,8 @@ st.markdown("""
         transition: all 0.25s ease;
     }
     .interactive-card:hover {
-        border-color: #41611b !important;
-        box-shadow: 0 4px 20px rgba(65, 97, 27, 0.4);
+        border-color: #FF7043;
+        box-shadow: 0 4px 20px rgba(255, 112, 67, 0.25);
     }
     
     /* Status Badges */
@@ -139,9 +139,9 @@ st.markdown("""
         display: inline-block;
         padding: 6px 14px;
         border-radius: 20px;
-        background-color: rgba(65, 97, 27, 0.35) !important;
-        color: #c5e0b4 !important;
-        border: 1.5px solid #41611b !important;
+        background-color: rgba(255, 87, 34, 0.25);
+        color: #FF8A65;
+        border: 1.5px solid #FF7043;
         font-size: 0.95rem !important;
         font-weight: 700;
     }
@@ -168,22 +168,22 @@ st.markdown("""
     }
     .stTabs [data-baseweb="tab"] {
         border-radius: 8px;
-        color: #c5e0b4 !important;
+        color: #FFE0B2 !important;
         padding: 10px 20px;
         font-size: 1.1rem !important;
         font-weight: 700;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #41611b !important;
+        background-color: #FF5722 !important;
         color: #FFFFFF !important;
-        box-shadow: 0 0 15px rgba(65, 97, 27, 0.5);
+        box-shadow: 0 0 15px rgba(255, 87, 34, 0.4);
     }
 
-    /* Buttons with Green Highlights */
+    /* Buttons with Orange Highlights */
     .stButton>button {
         background: rgba(52, 52, 56, 0.9) !important;
         color: #FFFFFF !important;
-        border: 1.5px solid #41611b !important;
+        border: 1.5px solid #FF7043 !important;
         border-radius: 10px !important;
         padding: 0.6rem 1.2rem !important;
         font-size: 1.08rem !important;
@@ -191,32 +191,24 @@ st.markdown("""
         transition: all 0.2s ease;
     }
     .stButton>button:hover {
-        background: #41611b !important;
-        border-color: #5b8726 !important;
+        background: #FF5722 !important;
+        border-color: #FF8A65 !important;
         color: #FFFFFF !important;
-        box-shadow: 0 0 18px rgba(65, 97, 27, 0.6) !important;
-    }
-
-    .stButton>button:disabled {
-        background: rgba(40, 40, 43, 0.6) !important;
-        border-color: #43434A !important;
-        color: #71717A !important;
-        box-shadow: none !important;
-        cursor: not-allowed !important;
+        box-shadow: 0 0 18px rgba(255, 87, 34, 0.5);
     }
     
     /* Text Inputs & Selectboxes */
     .stTextInput>div>div>input, .stSelectbox>div>div {
         background-color: rgba(31, 31, 34, 0.9) !important;
-        border: 1.5px solid #41611b !important;
+        border: 1.5px solid #FF8A65 !important;
         color: #FFFFFF !important;
         border-radius: 10px !important;
         font-size: 1.1rem !important;
         padding: 10px !important;
     }
     .stTextInput>div>div>input:focus {
-        border-color: #5b8726 !important;
-        box-shadow: 0 0 10px rgba(65, 97, 27, 0.5) !important;
+        border-color: #FF5722 !important;
+        box-shadow: 0 0 10px rgba(255, 87, 34, 0.4) !important;
     }
 
     /* Chat Messages */
@@ -234,9 +226,9 @@ st.markdown("""
     [data-testid="stChatInput"] {
         background-color: rgba(30, 30, 33, 0.95) !important;
         backdrop-filter: blur(10px);
-        border: 2px solid #41611b !important;
+        border: 2px solid #FF7043 !important;
         border-radius: 12px !important;
-        box-shadow: 0 0 15px rgba(65, 97, 27, 0.3) !important;
+        box-shadow: 0 0 15px rgba(255, 112, 67, 0.25) !important;
     }
     [data-testid="stChatInput"] textarea {
         font-size: 1.15rem !important;
@@ -307,8 +299,8 @@ def login_screen():
         st.markdown("<br><br><br>", unsafe_allow_html=True)
         st.markdown("""
         <div class="login-card">
-            <h3 style="margin-top: 0; color: #a9d18e;">Enter Workspace</h3>
-            <p style="color: #c5e0b4; font-size: 1rem; margin-bottom: 20px;">Access your saved subjects, papers, and predicted questions.</p>
+            <h3 style="margin-top: 0; color: #FF8A65;">Enter Workspace</h3>
+            <p style="color: #FFE0B2; font-size: 1rem; margin-bottom: 20px;">Access your saved subjects, papers & predicted questions.</p>
         """, unsafe_allow_html=True)
         
         email_or_name = st.text_input("Name or Email ID", placeholder="student@college.edu")
@@ -323,7 +315,7 @@ def login_screen():
             else:
                 st.error("Please enter a valid name or email.")
         
-        st.markdown("<div style='text-align:center; color:#a9d18e; margin: 12px 0; font-size: 0.95rem;'>or</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align:center; color:#FF8A65; margin: 12px 0; font-size: 0.95rem;'>or</div>", unsafe_allow_html=True)
         
         if st.button("Sign in with Google", use_container_width=True):
             st.session_state.authenticated_user = "student@google.com"
@@ -353,15 +345,19 @@ if bg_base64:
 
 # 7. Gemini Client & Fallback Configuration
 if not api_key:
-    st.error("API Key Missing: Please configure GEMINI_API_KEY in Streamlit Cloud Secrets or your .env file.")
+    st.error("⚠️ **API Key Missing**: Please configure `GEMINI_API_KEY` in Streamlit Cloud Secrets or your `.env` file.")
     st.stop()
 
 client = genai.Client(api_key=api_key)
 
 MODELS_TO_TRY = [
-    "gemini-3.6-flash",
-    "gemini-3.5-flash"
+    "gemini-2.5-flash",
+    "gemini-2.5-flash-lite",
+    "gemini-2.0-flash",
+    "gemini-3.1-flash-lite"
+
 ]
+
 
 def generate_content_with_fallback(contents, system_instruction=None):
     last_error = None
@@ -370,20 +366,17 @@ def generate_content_with_fallback(contents, system_instruction=None):
     ) if system_instruction else None
 
     for model_name in MODELS_TO_TRY:
-        for attempt in range(2):
-            try:
-                response = client.models.generate_content(
-                    model=model_name,
-                    contents=contents,
-                    config=config
-                )
-                return response.text
-            except Exception as e:
-                last_error = e
-                if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
-                    time.sleep(2)
-                else:
-                    break
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=contents,
+                config=config
+            )
+            return response.text
+        except Exception as e:
+            last_error = e
+            time.sleep(1)
+            continue
     raise last_error
 
 def upload_file_to_gemini(uploaded_file):
@@ -432,7 +425,7 @@ You are ExamBuddy, an expert academic tutor, mentor, and examination trend analy
 Behavioral Guidelines:
 1. Always answer student questions, conceptual queries, derivations, code, and practice problems thoroughly and accurately.
 2. If reference documents (syllabus, PYQs, exam images) are provided in the session, ground your analysis and predictions in those files.
-3. If NO documents are attached or uploaded, answer freely using your comprehensive academic knowledge base and standard university curriculum standards.
+3. If NO documents are attached or uploaded, answer freely using your comprehensive academic knowledge base and university curriculum standards.
 4. Solve mathematical and engineering problems with clear, structured step-by-step logic.
 """
 
@@ -490,8 +483,8 @@ with st.sidebar:
     )
 
     if (uploaded_syllabus or uploaded_papers) and (not current_data["syllabus_refs"] and not current_data["paper_refs"]):
-        if st.button("Process and Index Documents", use_container_width=True):
-            with st.spinner("Processing documents and images..."):
+        if st.button("⚡ Process & Index Documents", use_container_width=True):
+            with st.spinner("Processing documents & images..."):
                 try:
                     if uploaded_syllabus:
                         current_data["syllabus_refs"] = [upload_file_to_gemini(uploaded_syllabus)]
@@ -502,7 +495,7 @@ with st.sidebar:
                             p_refs.append(upload_file_to_gemini(p))
                         current_data["paper_refs"] = p_refs
 
-                    st.success("Documents and images synchronized.")
+                    st.success("Documents & images synchronized!")
                     st.rerun()
                 except Exception as e:
                     st.error(f"Error: {e}")
@@ -514,51 +507,55 @@ with header_left:
     st.markdown(f'<div class="subject-title">{current_subj}</div>', unsafe_allow_html=True)
     st.caption(f"Active workspace session for **{username}**")
 
-has_uploaded_docs = bool(current_data["syllabus_refs"] or current_data["paper_refs"])
-
 with header_right:
     s_badge = '<span class="status-badge-active">Syllabus Active</span>' if current_data["syllabus_refs"] else '<span class="status-badge-inactive">No Syllabus</span>'
     p_badge = f'<span class="status-badge-active">{len(current_data["paper_refs"])} Files Loaded</span>' if current_data["paper_refs"] else '<span class="status-badge-inactive">0 Files Loaded</span>'
     st.markdown(f"<div style='text-align:right; margin-top:15px;'>{s_badge} &nbsp; {p_badge}</div>", unsafe_allow_html=True)
 
-# 11. Core Gemini Runner Function
+# 11. Interactive Tabs Workspace
+tab_chat, tab_presets, tab_checklist, tab_export = st.tabs([
+    "💬 Chat & Solutions",
+    "⚡ One-Click Generator",
+    "✅ Revision Checklist",
+    "📥 Export Study Guide"
+])
+
 def run_gemini_query(prompt_text):
-    if not prompt_text or not prompt_text.strip():
-        return
-
-    # Prepare file references using proper SDK Part format
-    doc_parts = []
-    for f in current_data.get("syllabus_refs", []) + current_data.get("paper_refs", []):
-        if hasattr(f, "uri") and hasattr(f, "mime_type"):
-            doc_parts.append(types.Part.from_uri(file_uri=f.uri, mime_type=f.mime_type))
-        elif hasattr(f, "uri"):
-            doc_parts.append(types.Part.from_uri(file_uri=f.uri, mime_type="application/pdf"))
-
-    contents = []
-
-    # Reconstruct history
+    all_docs = current_data["syllabus_refs"] + current_data["paper_refs"]
+    conversation_contents = []
+    
     for i, turn in enumerate(current_data["chat_history"]):
-        role = "user" if turn["role"] == "user" else "model"
-        turn_parts = []
-        if i == 0 and doc_parts:
-            turn_parts.extend(doc_parts)
-        turn_parts.append(types.Part.from_text(text=turn["text"]))
-        contents.append(types.Content(role=role, parts=turn_parts))
+        if i == 0 and turn["role"] == "user":
+            parts = all_docs + [turn["text"]]
+        else:
+            parts = [turn["text"]]
+        
+        conversation_contents.append(
+            types.Content(
+                role=turn["role"],
+                parts=[types.Part.from_text(text=p) if isinstance(p, str) else p for p in parts]
+            )
+        )
 
-    # Add current turn
-    current_turn_parts = []
-    if not current_data["chat_history"] and doc_parts:
-        current_turn_parts.extend(doc_parts)
-    current_turn_parts.append(types.Part.from_text(text=prompt_text.strip()))
+    if not conversation_contents:
+        first_turn_parts = all_docs + [prompt_text]
+        conversation_contents.append(
+            types.Content(
+                role="user",
+                parts=[types.Part.from_text(text=p) if isinstance(p, str) else p for p in first_turn_parts]
+            )
+        )
+    else:
+        conversation_contents.append(
+            types.Content(role="user", parts=[types.Part.from_text(text=prompt_text)])
+        )
 
-    contents.append(types.Content(role="user", parts=current_turn_parts))
-
-    current_data["chat_history"].append({"role": "user", "text": prompt_text.strip()})
+    current_data["chat_history"].append({"role": "user", "text": prompt_text})
 
     with st.spinner("ExamBuddy is thinking..."):
         try:
             response_text = generate_content_with_fallback(
-                contents=contents,
+                contents=conversation_contents,
                 system_instruction=SYSTEM_INSTRUCTION
             )
             current_data["chat_history"].append({"role": "model", "text": response_text})
@@ -567,23 +564,15 @@ def run_gemini_query(prompt_text):
         except Exception as e:
             st.error(f"Error: {e}")
 
-# 12. Interactive Tabs Workspace
-tab_chat, tab_presets, tab_checklist, tab_export = st.tabs([
-    "Chat & Solutions",
-    "One-Click Generator",
-    "Revision Checklist",
-    "Export Study Guide"
-])
-
 # TAB 1: Chat & Solutions
 with tab_chat:
     st.markdown("##### Quick Action Presets")
     c1, c2 = st.columns(2)
     with c1:
-        if st.button("Full Trend Report", key="btn_trend", disabled=not has_uploaded_docs, use_container_width=True, help="Upload syllabus or previous question papers first" if not has_uploaded_docs else None):
+        if st.button("📊 Full Trend Report", use_container_width=True):
             run_gemini_query("Generate a full Module-wise Weightage table, repeated theorems, and exam priorities.")
     with c2:
-        if st.button("Syllabus Audit", key="btn_audit", disabled=not has_uploaded_docs, use_container_width=True, help="Upload syllabus or previous question papers first" if not has_uploaded_docs else None):
+        if st.button("🔍 Syllabus Audit", use_container_width=True):
             run_gemini_query("Compare syllabus units against the question papers and list overlooked vs heavily tested units.")
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -608,21 +597,21 @@ with tab_presets:
     with gen_col1:
         st.markdown("""
         <div class="interactive-card">
-            <h4>High-Yield Formula & Derivations Sheet</h4>
-            <p style="color: #c5e0b4; font-size: 1rem;">Extracts and organizes all key formulas, proofs, and definitions.</p>
+            <h4>💡 High-Yield Formula & Derivations Sheet</h4>
+            <p style="color: #FFE0B2; font-size: 1rem;">Extracts and organizes all key formulas, proofs, and definitions.</p>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("Generate Formula & Derivations Sheet", key="btn_formulas", use_container_width=True):
+        if st.button("Generate Formula & Derivations Sheet", use_container_width=True):
             run_gemini_query("Extract and summarize all important recurring definitions, formulas, and derivations into a structured cheat sheet.")
 
     with gen_col2:
         st.markdown("""
         <div class="interactive-card">
-            <h4>3-Mark Quick Review Questions</h4>
-            <p style="color: #c5e0b4; font-size: 1rem;">Generates short concept-testing questions with step-by-step answers.</p>
+            <h4>⚡ 3-Mark Quick Review Questions</h4>
+            <p style="color: #FFE0B2; font-size: 1rem;">Generates short concept-testing questions with step-by-step answers.</p>
         </div>
         """, unsafe_allow_html=True)
-        if st.button("Generate Short Concept Questions", key="btn_short_q", use_container_width=True):
+        if st.button("Generate Short Concept Questions", use_container_width=True):
             run_gemini_query("Generate 5 short 2-mark/3-mark questions from high-weightage topics with concise answers.")
 
 # TAB 3: Revision Checklist
@@ -646,7 +635,7 @@ with tab_export:
         chat_text_export += f"{prefix}\n\n{msg['text']}\n\n---\n\n"
 
     st.download_button(
-        label="Download Study Guide (.md)",
+        label="📥 Download Study Guide (.md)",
         data=chat_text_export,
         file_name=f"{current_subj}_Study_Guide.md",
         mime="text/markdown",
